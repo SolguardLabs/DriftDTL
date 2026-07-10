@@ -1,0 +1,60 @@
+{
+  "name": "retry after timeout",
+  "startEpoch": 0,
+  "accounts": [
+    {
+      "id": "maker-e",
+      "balances": [{ "asset": "dUSD", "available": 300000 }]
+    },
+    {
+      "id": "merchant-e",
+      "balances": [{ "asset": "dUSD", "available": 0 }]
+    },
+    {
+      "id": "lane-ops",
+      "balances": [{ "asset": "dUSD", "available": 0 }]
+    }
+  ],
+  "lanes": [
+    {
+      "id": "usd-timeout",
+      "asset": "dUSD",
+      "operator": "lane-ops",
+      "policy": {
+        "timeoutEpochs": 3,
+        "feeBps": 10,
+        "maxRetries": 2,
+        "minPacketAmount": 1000,
+        "maxPacketAmount": 500000
+      }
+    }
+  ],
+  "actions": [
+    {
+      "type": "submit",
+      "epoch": 1,
+      "packet": {
+        "id": "pkt-retry-1",
+        "lane": "usd-timeout",
+        "source": "maker-e",
+        "recipient": "merchant-e",
+        "amount": 100000,
+        "priority": "high"
+      }
+    },
+    { "type": "cancel", "epoch": 4, "packet": "pkt-retry-1" },
+    {
+      "type": "retry",
+      "epoch": 5,
+      "packet": {
+        "id": "pkt-retry-1",
+        "lane": "usd-timeout",
+        "source": "maker-e",
+        "recipient": "merchant-e",
+        "amount": 100000,
+        "priority": "high"
+      }
+    },
+    { "type": "confirm", "epoch": 6, "packet": "pkt-retry-1", "ack": "ack-retry-1" }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "balanced settlement",
+  "startEpoch": 0,
+  "accounts": [
+    {
+      "id": "maker-a",
+      "balances": [{ "asset": "dUSD", "available": 1000000 }]
+    },
+    {
+      "id": "merchant-a",
+      "balances": [{ "asset": "dUSD", "available": 0 }]
+    },
+    {
+      "id": "lane-ops",
+      "balances": [{ "asset": "dUSD", "available": 0 }]
+    }
+  ],
+  "lanes": [
+    {
+      "id": "usd-prime",
+      "asset": "dUSD",
+      "operator": "lane-ops",
+      "policy": {
+        "timeoutEpochs": 4,
+        "feeBps": 10,
+        "maxRetries": 2,
+        "minPacketAmount": 1000,
+        "maxPacketAmount": 500000
+      }
+    }
+  ],
+  "actions": [
+    {
+      "type": "submit",
+      "epoch": 1,
+      "packet": {
+        "id": "pkt-balanced-1",
+        "lane": "usd-prime",
+        "source": "maker-a",
+        "recipient": "merchant-a",
+        "amount": 100000,
+        "priority": "normal",
+        "memo": "merchant settlement"
+      }
+    },
+    { "type": "confirm", "epoch": 2, "packet": "pkt-balanced-1", "ack": "ack-balanced-1" }
+  ]
+}

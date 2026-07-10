@@ -1,0 +1,48 @@
+{
+  "name": "legitimate cancellation",
+  "startEpoch": 0,
+  "accounts": [
+    {
+      "id": "maker-d",
+      "balances": [{ "asset": "dUSD", "available": 200000 }]
+    },
+    {
+      "id": "merchant-d",
+      "balances": [{ "asset": "dUSD", "available": 0 }]
+    },
+    {
+      "id": "lane-ops",
+      "balances": [{ "asset": "dUSD", "available": 0 }]
+    }
+  ],
+  "lanes": [
+    {
+      "id": "usd-timeout",
+      "asset": "dUSD",
+      "operator": "lane-ops",
+      "policy": {
+        "timeoutEpochs": 3,
+        "feeBps": 10,
+        "maxRetries": 2,
+        "minPacketAmount": 1000,
+        "maxPacketAmount": 500000
+      }
+    }
+  ],
+  "actions": [
+    {
+      "type": "submit",
+      "epoch": 1,
+      "packet": {
+        "id": "pkt-cancel-1",
+        "lane": "usd-timeout",
+        "source": "maker-d",
+        "recipient": "merchant-d",
+        "amount": 60000,
+        "priority": "low"
+      }
+    },
+    { "type": "advance", "epoch": 4 },
+    { "type": "cancel", "epoch": 4, "packet": "pkt-cancel-1" }
+  ]
+}

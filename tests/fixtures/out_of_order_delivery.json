@@ -1,0 +1,60 @@
+{
+  "name": "out of order delivery",
+  "startEpoch": 0,
+  "accounts": [
+    {
+      "id": "maker-b",
+      "balances": [{ "asset": "dUSD", "available": 1000000 }]
+    },
+    {
+      "id": "merchant-b",
+      "balances": [{ "asset": "dUSD", "available": 0 }]
+    },
+    {
+      "id": "lane-ops",
+      "balances": [{ "asset": "dUSD", "available": 0 }]
+    }
+  ],
+  "lanes": [
+    {
+      "id": "usd-prime",
+      "asset": "dUSD",
+      "operator": "lane-ops",
+      "policy": {
+        "timeoutEpochs": 6,
+        "feeBps": 10,
+        "maxRetries": 2,
+        "minPacketAmount": 1000,
+        "maxPacketAmount": 500000
+      }
+    }
+  ],
+  "actions": [
+    {
+      "type": "submit",
+      "epoch": 1,
+      "packet": {
+        "id": "pkt-ooo-1",
+        "lane": "usd-prime",
+        "source": "maker-b",
+        "recipient": "merchant-b",
+        "amount": 50000,
+        "priority": "high"
+      }
+    },
+    {
+      "type": "submit",
+      "epoch": 2,
+      "packet": {
+        "id": "pkt-ooo-2",
+        "lane": "usd-prime",
+        "source": "maker-b",
+        "recipient": "merchant-b",
+        "amount": 70000,
+        "priority": "normal"
+      }
+    },
+    { "type": "confirm", "epoch": 3, "packet": "pkt-ooo-2", "ack": "ack-ooo-2" },
+    { "type": "confirm", "epoch": 5, "packet": "pkt-ooo-1", "ack": "ack-ooo-1" }
+  ]
+}

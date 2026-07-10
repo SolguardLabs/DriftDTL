@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "out": true,
+    "build": true,
+    "node_modules": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "C_Cpp.default.cppStandard": "c++20",
+  "C_Cpp.default.includePath": ["${workspaceFolder}/src"]
+}
