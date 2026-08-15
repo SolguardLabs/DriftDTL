@@ -25,7 +25,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         node: [22.x, 24.x]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
@@ -37,7 +37,7 @@ jobs:
     name: CMake / Ubuntu
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build build --config Release --parallel
       - run: ./build/driftdtl validate tests/fixtures/balanced_settlement.json
