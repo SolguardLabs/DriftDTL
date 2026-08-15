@@ -22,6 +22,7 @@ private:
     [[nodiscard]] static json::Value reconciliation(const SettlementEngine& engine);
     [[nodiscard]] static json::Value replay(const SettlementEngine& engine);
     [[nodiscard]] static json::Value queue(const SettlementEngine& engine);
+    [[nodiscard]] static json::Value capital(const SettlementEngine& engine);
     [[nodiscard]] static json::Value amount(Amount amount);
 };
 

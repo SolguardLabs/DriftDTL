@@ -5,7 +5,9 @@ const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const steps = [
   ["run", "build", "--", "--warnings"],
   ["run", "test:ts"],
+  ["run", "typecheck"],
   ["run", "format:check"],
+  ["run", "verify:artifacts"],
 ];
 
 for (const args of steps) {

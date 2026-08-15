@@ -1,16 +1,18 @@
 {
   "name": "driftdtl",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Motor C++ de settlement asincronico con fixtures TypeScript.",
+  "description": "Motor determinista de liquidación asíncrona con núcleo C++20 y SDK TypeScript.",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "npm run build -- --warnings && npm run test:ts",
     "test:ts": "node --import tsx --test \"tests/node/*.test.ts\"",
+    "typecheck": "tsc --noEmit",
     "ci": "node scripts/ci.mjs",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "verify:artifacts": "node scripts/verify-artifacts.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",
@@ -19,6 +21,6 @@
     "typescript": "^7.0.2"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }
