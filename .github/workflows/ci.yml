@@ -1,21 +1,43 @@
-name: ci
+name: CI
 
 on:
   push:
+    branches: [main, production, "feature/**"]
+    tags: ["v*"]
   pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} / Node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [22.x, 24.x]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version: "24"
-          cache: "npm"
-      - name: Install compiler
-        run: sudo apt-get update && sudo apt-get install -y build-essential
-      - name: Install dependencies
-        run: npm ci
-      - name: Run CI
-        run: bash scripts/ci.sh
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run ci
+
+  cmake:
+    name: CMake / Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build --config Release --parallel
+      - run: ./build/driftdtl validate tests/fixtures/balanced_settlement.json

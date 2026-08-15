@@ -2,6 +2,7 @@
 
 #include "audit/replay.hpp"
 #include "domain/model.hpp"
+#include "economics/capital_model.hpp"
 #include "ledger/reconcile.hpp"
 #include "settlement/queue.hpp"
 #include "settlement/receipt.hpp"
@@ -20,6 +21,7 @@ json::Value JsonReport::build(const SettlementEngine& engine, bool include_event
     root.set("reconciliation", reconciliation(engine));
     root.set("replay", replay(engine));
     root.set("queue", queue(engine));
+    root.set("capital", capital(engine));
     if (include_events) {
         root.set("events", events(engine));
     }
@@ -248,6 +250,35 @@ json::Value JsonReport::queue(const SettlementEngine& engine)
 json::Value JsonReport::amount(Amount amount_value)
 {
     return json::Value(amount_value.units());
+}
+
+json::Value JsonReport::capital(const SettlementEngine& engine)
+{
+    CapitalSnapshot snapshot = CapitalModel::evaluate(engine);
+    json::Value out(json::Value::object_type{});
+    out.set("aggregateLiquid", amount(snapshot.aggregate_liquid));
+    out.set("aggregateCommitments", amount(snapshot.aggregate_commitments));
+    out.set("aggregateTimeoutExposure", amount(snapshot.aggregate_timeout_exposure));
+    out.set("openPackets", snapshot.open_packets);
+    out.set("timedOutPackets", snapshot.timed_out_packets);
+
+    json::Value assets(json::Value::array_type{});
+    for (const AssetCapitalMetrics& asset : snapshot.assets) {
+        json::Value item(json::Value::object_type{});
+        item.set("asset", asset.asset.str());
+        item.set("liquid", amount(asset.liquid));
+        item.set("observedCommitments", amount(asset.observed_commitments));
+        item.set("confirmedCommitments", amount(asset.confirmed_commitments));
+        item.set("settledCredits", amount(asset.settled_credits));
+        item.set("earnedFees", amount(asset.earned_fees));
+        item.set("timeoutExposure", amount(asset.timeout_exposure));
+        item.set("observedUtilizationBps", asset.observed_utilization_bps);
+        item.set("confirmationCoverageBps", asset.confirmation_coverage_bps);
+        item.set("overlapBps", asset.overlap_bps);
+        assets.push(std::move(item));
+    }
+    out.set("assets", std::move(assets));
+    return out;
 }
 
 } // namespace drift
