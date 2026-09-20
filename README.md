@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="./assets/banner.png" alt="DriftDTL" width="100%" />
-</p>
-
 # DriftDTL
 
 [![CI](https://github.com/SolguardLabs/DriftDTL/actions/workflows/ci.yml/badge.svg)](https://github.com/SolguardLabs/DriftDTL/actions/workflows/ci.yml)
@@ -13,6 +9,10 @@ DriftDTL es un motor determinista de liquidación asíncrona para redes con fina
 Coordina reservas, confirmaciones, reintentos, prioridades y conciliación por activo sin depender de
 servicios externos. El núcleo C++20 ejecuta la máquina de estados; el SDK TypeScript ofrece una
 interfaz tipada para sistemas de tesorería, operadores y automatización.
+
+<p align="center">
+  <img src="./assets/banner.png" alt="DriftDTL" width="100%" />
+</p>
 
 ## Capacidades
 
