@@ -5,14 +5,14 @@
 [![C++20](https://img.shields.io/badge/C%2B%2B-20-00599C)](https://isocpp.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22-339933)](https://nodejs.org/)
 
+<p align="center">
+  <img src="./assets/banner.png" alt="DriftDTL" width="100%" />
+</p>
+
 DriftDTL es un motor determinista de liquidación asíncrona para redes con finalización diferida.
 Coordina reservas, confirmaciones, reintentos, prioridades y conciliación por activo sin depender de
 servicios externos. El núcleo C++20 ejecuta la máquina de estados; el SDK TypeScript ofrece una
 interfaz tipada para sistemas de tesorería, operadores y automatización.
-
-<p align="center">
-  <img src="./assets/banner.png" alt="DriftDTL" width="100%" />
-</p>
 
 ## Capacidades
 
